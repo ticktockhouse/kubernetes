@@ -1,0 +1,16 @@
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: prometheus-ingress
+  namespace: monitoring
+  annotations:
+    kubernetes.io/ingress.class: traefik
+spec:
+  rules:
+  - host: k3s.bulkington.ave
+    http:
+      paths:
+      - path: /prometheus
+        backend:
+          serviceName: prometheus-service
+          servicePort: 80

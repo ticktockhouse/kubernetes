@@ -19,6 +19,7 @@ spec:
           args:
             - "--config.file=/etc/prometheus/prometheus.yml"
             - "--storage.tsdb.path=/prometheus/"
+            - "--web.external-url=http://k3s.bulkington.ave/prometheus"
           ports:
             - containerPort: 9090
           volumeMounts:
@@ -35,21 +36,3 @@ spec:
         - name: prometheus-storage-volume
           persistentVolumeClaim:
             claimName: prometheus-local-zfs-pvc
----
-apiVersion: v1
-kind: Service
-metadata:
-  name: prometheus-service
-  namespace: monitoring
-  annotations:
-      prometheus.io/scrape: 'true'
-      prometheus.io/port:   '9090'
-
-spec:
-  selector:
-    app: prometheus-server
-  type: NodePort
-  ports:
-    - port: 8080
-      targetPort: 9090
-      nodePort: 30000

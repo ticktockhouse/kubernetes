@@ -111,3 +111,16 @@ data:
         - source_labels: [__meta_kubernetes_service_name]
           action: replace
           target_label: kubernetes_name
+
+      - job_name: 'netdata-scrape'
+
+        metrics_path: 'api/v1/allmetrics'
+        params:
+          format: [prometheus]
+        honor_labels: true
+        static_configs:
+          - targets: ['192.168.77.13:19999']
+
+      - job_name: 'node-exporter'
+        static_configs:
+          - targets: ['192.168.77.10:9100','192.168.77.13:9100']
