@@ -122,5 +122,35 @@ data:
           - targets: ['192.168.77.13:19999']
 
       - job_name: 'node-exporter'
+        file_sd_configs:
+        - files:
+            - 'targets.json'
+
+      - job_name: 'edgerouter SNMP'
         static_configs:
-          - targets: ['192.168.77.10:9100','192.168.77.13:9100']
+          - targets:
+            - 192.168.77.1  # SNMP device.
+        metrics_path: /snmp
+        params:
+          module: [if_mib]
+        relabel_configs:
+          - source_labels: [__address__]
+            target_label: __param_target
+          - source_labels: [__param_target]
+            target_label: instance
+          - target_label: __address__
+            replacement: 127.0.0.1:9117 
+  targets.json: |-
+    [ 
+      {
+        "labels" : {
+          "job": "node-exporter"
+        },
+        "targets" : [
+          "localhost:9100",
+          "10.0.0.10:9100",
+          "10.0.0.11:9100",
+          "10.0.0.13:9100"
+        ]
+      }
+    ] 
