@@ -1,0 +1,47 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: grafana
+  namespace: monitoring
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: grafana
+  template:
+    metadata:
+      name: grafana
+      labels:
+        app: grafana
+    spec:
+      containers:
+      - name: grafana
+        image: grafana/grafana:latest
+        envFrom:
+          - secretRef:
+              name: grafana-creds
+        ports:
+        - name: grafana
+          containerPort: 3000
+        resources:
+          limits:
+            memory: "2Gi"
+            cpu: "1000m"
+          requests: 
+            memory: "1Gi"
+            cpu: "500m"
+        volumeMounts:
+          - mountPath: /var/lib/grafana
+            name: grafana-storage
+          - mountPath: /etc/grafana
+            name: config-volume
+          - name: datasources-provider
+            mountPath: /etc/grafana/provisioning/datasources
+          - name: dashboard-provider
+            mountPath: /etc/grafana/provisioning/dashboards
+      volumes:
+        - name: config-volume
+          configMap:
+            name: grafana-config
+        - name: grafana-storage
+          emptyDir: {}
