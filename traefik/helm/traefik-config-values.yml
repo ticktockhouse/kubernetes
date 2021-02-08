@@ -1,0 +1,11 @@
+ingressRoute:
+  dashboard:
+    enabled: false
+persistence:
+  enabled: true
+  path: /certs
+  size: 128Mi
+volumes:
+  - mountPath: /data
+    name: traefik-config
+    type: configMap

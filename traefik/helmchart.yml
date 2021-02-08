@@ -1,0 +1,28 @@
+apiVersion: helm.cattle.io/v1
+kind: HelmChart
+metadata:
+  annotations:
+    objectset.rio.cattle.io/applied: '{"apiVersion":"helm.cattle.io/v1","kind":"HelmChart","metadata":{"annotations":{"objectset.rio.cattle.io/id":"","objectset.rio.cattle.io/owner-gvk":"k3s.cattle.io/v1,
+      Kind=Addon","objectset.rio.cattle.io/owner-name":"traefik","objectset.rio.cattle.io/owner-namespace":"kube-system"},"labels":{"objectset.rio.cattle.io/hash":"d54a3cde895c2fa53d0b51458a7ae1923737ef63"},"name":"traefik","namespace":"kube-system"},"spec":{"chart":"https://%{KUBERNETES_API}%/static/charts/traefik-1.81.0.tgz","set":{"kubernetes.ingressEndpoint.useDefaultPublishedService":"true","metrics.prometheus.enabled":"true","rbac.enabled":"true","ssl.enabled":"true"}}}'
+    objectset.rio.cattle.io/id: ""
+    objectset.rio.cattle.io/owner-gvk: k3s.cattle.io/v1, Kind=Addon
+    objectset.rio.cattle.io/owner-name: traefik
+    objectset.rio.cattle.io/owner-namespace: kube-system
+  finalizers:
+  - wrangler.cattle.io/helm-controller
+  generation: 2
+  labels:
+    objectset.rio.cattle.io/hash: d54a3cde895c2fa53d0b51458a7ae1923737ef63
+  name: traefik
+  namespace: kube-system
+  resourceVersion: "3353473"
+  selfLink: /apis/helm.cattle.io/v1/namespaces/kube-system/helmcharts/traefik
+spec:
+  chart: https://%{KUBERNETES_API}%/static/charts/traefik-1.81.0.tgz
+  set:
+    kubernetes.ingressEndpoint.useDefaultPublishedService: "true"
+    metrics.prometheus.enabled: "true"
+    rbac.enabled: "true"
+    ssl.enabled: "true"
+status:
+  jobName: helm-install-traefik
