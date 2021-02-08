@@ -1,0 +1,43 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: syncthing
+  namespace: network-daemons
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: syncthing
+  template:
+    metadata:
+      labels:
+        app: syncthing
+    spec:
+      containers:
+        - name: syncthing
+          image: syncthing/syncthing
+          args: ["-gui-address=0.0.0.0:8384"]
+          ports:
+            - containerPort: 8384
+            - containerPort: 22000
+          volumeMounts:
+            - name: syncthing-config-volume
+              mountPath: /var/syncthing/config
+            - name: syncthing-from-origin
+              mountPath: /srv/from-origin
+            - name: syncthing-bananapi
+              mountPath: /srv/bananapi
+      securityContext:
+        fsGroup: 1000
+      volumes:
+        - name: syncthing-config-volume
+          persistentVolumeClaim:
+            claimName: syncthing-local-zfs-pvc
+        - name: syncthing-from-origin
+          hostPath:
+            path: /extzfs/from-origin
+            type: DirectoryOrCreate
+        - name: syncthing-bananapi
+          hostPath:
+            path: /extzfs/bananapi
+            type: DirectoryOrCreate

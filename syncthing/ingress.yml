@@ -1,0 +1,26 @@
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: syncthing-ingress
+  namespace: network-daemons
+  annotations:
+    kubernetes.io/ingress.class: traefik
+    # traefik.ingress.kubernetes.io/rewrite-target: /
+    # traefik.ingress.kubernetes.io/rule-type: "PathPrefixStrip"
+    # traefik.frontend.rule.type: PathPrefixStrip
+    # traefik.ingress.kubernetes.io/app-root: "/syncthing"
+    # traefik.ingress.kubernetes.io/redirect-regex: ^http://
+  # - traefik.frontend.redirect.regex: ^https:\\\\/\\\\/([^\\\\/]+)\\\\/?$$"
+  # - traefik.frontend.redirect.replacement: https://$$1/abc/xyz/"
+
+
+spec:
+  rules:
+  - host: k3s.bulkington.ave
+    http:
+      paths:
+      # - path: /syncthing
+      - path: /
+        backend:
+          serviceName: syncthing-service
+          servicePort: 8384
